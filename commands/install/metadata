@@ -3,4 +3,4 @@
 # Tue Jan 22 19:20:54 UTC 2013
 NAME=install
 DESCRIPTION="Install a Mongo DB onto the machine"
-OPTIONS=
+OPTIONS="pkgurl"

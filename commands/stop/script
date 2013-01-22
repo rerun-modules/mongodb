@@ -61,6 +61,7 @@ rerun_options_parse "$@"
 
 # - - -
 # Put the command implementation here.
+service mongod stop
 # - - -
 
 # Done. Exit with last command exit status.

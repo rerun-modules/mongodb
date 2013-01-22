@@ -10,7 +10,7 @@
 # and show its options.
 # 
 #/ command: mongodb:install: "Install a Mongo DB onto the machine"
-#/ usage: rerun mongodb:install [options]
+#/ usage: rerun mongodb:install  --pkgurl <> 
 
 # Load common functions
 # ---------------------
@@ -47,7 +47,7 @@ set -o nounset -o pipefail
 # declared by `rerun` or by the option parser function.
 
 #/ rerun-variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option-variables: 
+#/ option-variables: PKGURL
 
 # The `rerun_options_parse` function processes the command line
 # arguments. Each accepted command line flag results in setting 
@@ -62,7 +62,7 @@ rerun_options_parse "$@"
 # - - -
 
 # Put the command implementation here.
-
+sudo install rpm -Uh ${PKGURL}
 # - - -
 
 # Done. Exit with last command exit status.
