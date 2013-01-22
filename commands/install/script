@@ -62,7 +62,7 @@ rerun_options_parse "$@"
 # - - -
 
 # Put the command implementation here.
-sudo install rpm -Uh ${PKGURL}
+sudo rpm -Uh ${PKGURL}
 # - - -
 
 # Done. Exit with last command exit status.
