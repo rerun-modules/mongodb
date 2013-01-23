@@ -13,7 +13,7 @@ Group: Applications/System
 AutoReqProv: no
 
 # Makes the package relocatable:
-Prefix: /usr/share
+Prefix: /usr
 
 BuildArch: x86_64
  
@@ -35,8 +35,12 @@ MongoDB Server
  
 %install
 rm -rf %{buildroot}
-install -d -m 755 %{buildroot}/usr/share/mongodb
-cp -R . %{buildroot}/usr/share/mongodb
+install -d -m 755 %{buildroot}/%{_datadir}/doc/%{name}
+cp ./mongodb-linux-x86_64-%{mongo_version}/GNU* %{buildroot}/%{_datadir}/doc/%{name}
+cp ./mongodb-linux-x86_64-%{mongo_version}/REA* %{buildroot}/%{_datadir}/doc/%{name}
+cp ./mongodb-linux-x86_64-%{mongo_version}/THI* %{buildroot}/%{_datadir}/doc/%{name}
+install -d -m 755 %{buildroot}/%{_bindir}
+cp ./mongodb-linux-x86_64-%{mongo_version}/bin/* %{buildroot}/%{_bindir}/
 install -d %{buildroot}/%{_initrddir}/
 install -m 755 %{SOURCE1} %{buildroot}/%{_initrddir}/mongos
 install -m 755 %{SOURCE2} %{buildroot}/%{_initrddir}/mongod
@@ -46,12 +50,12 @@ install -m 755 %{SOURCE2} %{buildroot}/%{_initrddir}/mongod
 %files
 %defattr(-,root,root)
 # Removes user/group verification to support installation as a non-root user:
-%verify(not user group) /usr/share/%{name}
+%verify(not user group) /usr
 %{_initrddir}/mongos
 %{_initrddir}/mongod
  
 %changelog
 * Wed Jan 23 2013 Lee Thompson <thompson@dtosolutions.com> 2.2.2
-    - add some RPM syntax sugar like dist and compression
+    - add some RPM syntax sugar, FHS, dist and compression
 * Fri Jun 3 2011 Chuck Scott <chuck@dtosolutions.com> 2.2-2
     - test the changelong
