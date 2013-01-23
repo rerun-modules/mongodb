@@ -47,6 +47,17 @@ install -m 755 %{SOURCE2} %{buildroot}/%{_initrddir}/mongod
 
 %clean
 
+%pre
+# make sure the jboss-as user and group exist:
+if id mongod > /dev/null 2>&1
+then
+  :
+else
+  groupadd -f mongod
+  useradd -rd %{_datadir}/doc/%{name} -g mongod mongod
+  passwd -l mongod
+fi
+
 %files
 %defattr(-,root,root)
 # Removes user/group verification to support installation as a non-root user:
