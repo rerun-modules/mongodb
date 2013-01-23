@@ -82,7 +82,7 @@ mkdir -p ${BLDDIR}/tmp \
 for h in mongod.init mongos.init; do
     SRC="${RERUN_MODULE_DIR}/lib/${h}";
     DST="${BLDDIR}/SOURCES/${h}";
-    sed -e "s:@MONGODPATH@:/usr/share/mongodb:g" ${SRC} > ${DST}
+    sed -e "s:@MONGODPATH@:/usr:g" ${SRC} > ${DST}
 done
 
 # Grab the mongo db distribution
