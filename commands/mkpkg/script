@@ -61,7 +61,12 @@ rerun_options_parse "$@"
 
 # - - -
 # Put the command implementation here.
+CACHEDIR="/tmp/rerun.mongodb.cache"
 BLDDIR="/tmp/rerun.mongodb.mkpkg.${BUILD_NUMBER}"
+
+if [[ ! -d ${CACHEDIR} ]]; then
+  mkdir -p ${CACHEDIR} || rerun_die "Failed making cache directory"
+fi
 
 if [[ -d ${BLDDIR} ]]; then
   if [[ ${BUILD_NUMBER} -eq 0 ]]; then
@@ -80,14 +85,20 @@ mkdir -p ${BLDDIR}/tmp \
 
 # template time
 for h in mongod.init mongos.init; do
-    SRC="${RERUN_MODULE_DIR}/lib/${h}";
-    DST="${BLDDIR}/SOURCES/${h}";
-    sed -e "s:@MONGODPATH@:/usr:g" ${SRC} > ${DST}
+  SRC="${RERUN_MODULE_DIR}/lib/${h}";
+  DST="${BLDDIR}/SOURCES/${h}";
+  sed -e "s:@MONGODPATH@:/usr:g" ${SRC} > ${DST}
 done
 
 # Grab the mongo db distribution
-wget --tries=5 -P ${BLDDIR}/SOURCES \
-    http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGO_VERSION}.tgz
+if [[ ! -f ${CACHEDIR}/mongodb-linux-x86_64-${MONGO_VERSION}.tgz ]]; then
+  wget --tries=5 -P ${CACHEDIR} \
+    http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGO_VERSION}.tgz \
+    || rerun_die "Failed to download mongo database release tarball"
+fi
+
+ln -s ${CACHEDIR}/mongodb-linux-x86_64-${MONGO_VERSION}.tgz \
+  ${BLDDIR}/SOURCES/mongodb-linux-x86_64-${MONGO_VERSION}.tgz
 
 # use our spec file
 cp ${RERUN_MODULE_DIR}/lib/mongodb.spec ${BLDDIR}/SPECS/

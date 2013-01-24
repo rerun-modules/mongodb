@@ -17,8 +17,10 @@ describe "mkpkg"
 
 # ------------------------------
 # Replace this test. 
-it_fails_without_a_real_test() {
-    exit 1
+it_make_rpm() {
+  DIST="$(rpm --eval %{?dist})"
+  rerun mongodb: mkpkg --build-number 0
+  test -f /tmp/rerun.mongodb.mkpkg.0/RPMS/x86_64/mongodb-2.2.2${DIST}-0.x86_64.rpm
 }
 # ------------------------------
 
