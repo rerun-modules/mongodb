@@ -61,7 +61,7 @@ fi
 %files
 %defattr(-,root,root)
 # Removes user/group verification to support installation as a non-root user:
-%verify(not user group) /usr
+/usr
 %{_initrddir}/mongos
 %{_initrddir}/mongod
  
