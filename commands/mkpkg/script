@@ -110,16 +110,12 @@ rpmbuild -ba --define "_topdir ${BLDDIR}" \
              --define "release ${BUILD_NUMBER}" \
              ${BLDDIR}/SPECS/mongodb.spec
 
+mkdir -p "${TARGET}"
 find ${BLDDIR}/{RPMS,SRPMS}/ -name "*.rpm" -exec mv {} ${TARGET}/ \;
 
 rm -rf ${BLDDIR}
 # - - -
 
-mkdir -p "${TARGET}"
-cp  "${BLDDIR}"/RPMS/*/*.rpm "${TARGET}"
-cp  "${BLDDIR}"/SRPMS/*.src.rpm "${TARGET}"
-
-rm -rf "${BLDDIR}"
-
 # Done. Exit with last command exit status.
 exit $?
+
