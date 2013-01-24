@@ -10,7 +10,7 @@
 # and show its options.
 # 
 #/ command: mongodb:mkpkg: "Create a OS package of the Mongo Database"
-#/ usage: rerun mongodb:mkpkg  --build-number <>  --mongo-version <2.2.2> 
+#/ usage: rerun mongodb:mkpkg  --build-number <>  --mongo-version <2.2.2>  --target </tmp> 
 
 # Load common functions
 # ---------------------
@@ -47,7 +47,7 @@ set -o nounset -o pipefail
 # declared by `rerun` or by the option parser function.
 
 #/ rerun-variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option-variables: BUILD_NUMBER VERSION MONGO_VERSION
+#/ option-variables: BUILD_NUMBER MONGO_VERSION TARGET
 
 # The `rerun_options_parse` function processes the command line
 # arguments. Each accepted command line flag results in setting 
