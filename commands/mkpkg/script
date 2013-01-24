@@ -109,6 +109,10 @@ rpmbuild -ba --define "_topdir ${BLDDIR}" \
              --define "mongo_version ${MONGO_VERSION}" \
              --define "release ${BUILD_NUMBER}" \
              ${BLDDIR}/SPECS/mongodb.spec
+
+find ${BLDDIR}/{RPMS,SRPMS}/ -name "*.rpm" -exec mv {} ${TARGET}/ \;
+
+rm -rf ${BLDDIR}
 # - - -
 
 # Done. Exit with last command exit status.
