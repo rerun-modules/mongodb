@@ -3,4 +3,4 @@
 # Wed Jan 23 12:53:15 CST 2013
 NAME=mkpkg
 DESCRIPTION="Create a OS package of the Mongo Database"
-OPTIONS="build-number mongo-version"
+OPTIONS="build-number mongo-version target"

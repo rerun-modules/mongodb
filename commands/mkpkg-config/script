@@ -9,15 +9,15 @@
 # The `command` and `usage` comments describe the command
 # and show its options.
 # 
-#/ command: mongodb:mkpkg: "Create a OS package of the Mongo Database"
-#/ usage: rerun mongodb:mkpkg  --build-number <>  --mongo-version <2.2.2>  --target </tmp> 
+#/ command: mongodb:mkpkg-config: "Create an OS configuration package for the Mongo Database"
+#/ usage: rerun mongodb:mkpkg-config  --build-number <>  --mongodb-config-version <>  --target </tmp> 
 
 # Load common functions
 # ---------------------
 
 # Load the function library for this module.
 # This loads rerun functions, too.
-. $RERUN_MODULE_DIR/lib/functions.sh mkpkg || { 
+. $RERUN_MODULE_DIR/lib/functions.sh mkpkg-config || { 
   echo >&2 "Failed loading function library." ; exit 1 ; 
 }
 
@@ -29,7 +29,7 @@
 # Trap errors and exit. The call to `rerun_die` will print the
 # the error message and exit with the error command exit status. 
 
-trap 'rerun_die $? "*** command failed: mongodb:mkpkg. ***"' ERR
+trap 'rerun_die $? "*** command failed: mongodb:mkpkg-config. ***"' ERR
 
 # Run [set] `nounset` to treat unset variables as errors. Set [pipefail]
 # so a pipeline return status is the value of the last 
@@ -47,7 +47,7 @@ set -o nounset -o pipefail
 # declared by `rerun` or by the option parser function.
 
 #/ rerun-variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option-variables: BUILD_NUMBER MONGO_VERSION TARGET
+#/ option-variables: BUILD_NUMBER MONGODB_CONFIG_VERSION TARGET
 
 # The `rerun_options_parse` function processes the command line
 # arguments. Each accepted command line flag results in setting 
@@ -59,15 +59,12 @@ rerun_options_parse "$@"
 # Command implementation
 # ----------------------
 
-# - - -
-# Put the command implementation here.
-CACHEDIR="/tmp/rerun.mongodb.cache"
-BLDDIR="/tmp/rerun.mongodb.mkpkg.${BUILD_NUMBER}"
+    #--build-number <>: "The build number, typically provided by Jenkins, which is sequentially issued each invocation"
+    #--mongo-version <2.2.2>: "The Mongo DB version that you want to create"
 
-if [[ ! -d ${CACHEDIR} ]]; then
-  mkdir -p ${CACHEDIR} || rerun_die "Failed making cache directory"
-fi
+BLDDIR="/tmp/rerun.mongodb-config.mkpkg.${BUILD_NUMBER}"
 
+rm -rf ${BLDDIR}
 if [[ -d ${BLDDIR} ]]; then
   if [[ ${BUILD_NUMBER} -eq 0 ]]; then
     # Build zero is reserved for testing
@@ -84,32 +81,23 @@ mkdir -p ${BLDDIR}/tmp \
          ${BLDDIR}/SRPMS || rerun_die
 
 # template time
-for h in mongod.init mongos.init; do
+for h in mongodb.conf; do
   SRC="${RERUN_MODULE_DIR}/lib/${h}";
   DST="${BLDDIR}/SOURCES/${h}";
-  sed -e "s:@MONGODPATH@:/usr:g" ${SRC} > ${DST}
+  # just mock what we might want to replace for this configuration file
+  sed -e "s:@SOMETHING@:WHATEVER:g" ${SRC} > ${DST}
 done
 
-# Grab the mongo db distribution
-if [[ ! -f ${CACHEDIR}/mongodb-linux-x86_64-${MONGO_VERSION}.tgz ]]; then
-  wget --tries=5 -P ${CACHEDIR} \
-    http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGO_VERSION}.tgz \
-    || rerun_die "Failed to download mongo database release tarball"
-fi
-
-ln -s ${CACHEDIR}/mongodb-linux-x86_64-${MONGO_VERSION}.tgz \
-  ${BLDDIR}/SOURCES/mongodb-linux-x86_64-${MONGO_VERSION}.tgz
-
 # use our spec file
-cp ${RERUN_MODULE_DIR}/lib/mongodb.spec ${BLDDIR}/SPECS/
+cp ${RERUN_MODULE_DIR}/lib/mongodb-config.spec ${BLDDIR}/SPECS/
 
 # build it
 rpmbuild -ba --define "_topdir ${BLDDIR}" \
              --define "_tmppath ${BLDDIR}/tmp" \
-             --define "mongo_version ${MONGO_VERSION}" \
+             --define "mongodb_config_version ${MONGODB_CONFIG_VERSION}" \
              --define "release ${BUILD_NUMBER}" \
-             ${BLDDIR}/SPECS/mongodb.spec
-# - - -
+             ${BLDDIR}/SPECS/mongodb-config.spec
+
 
 mkdir -p "${TARGET}"
 cp  "${BLDDIR}"/RPMS/*/*.rpm "${TARGET}"
@@ -117,5 +105,7 @@ cp  "${BLDDIR}"/SRPMS/*.src.rpm "${TARGET}"
 
 rm -rf "${BLDDIR}"
 
+
 # Done. Exit with last command exit status.
 exit $?
+
