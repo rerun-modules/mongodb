@@ -61,7 +61,12 @@ rerun_options_parse "$@"
 
 # - - -
 # Put the command implementation here.
-sudo rpm -e mongodb
+if [[ $(id -u) = "0" ]]; then
+    SUDO=""
+else
+    SUDO="sudo "
+fi
+${SUDO}yum remove mongodb
 # - - -
 
 # Done. Exit with last command exit status.
