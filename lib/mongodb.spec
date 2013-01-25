@@ -1,7 +1,7 @@
 Summary: MongoDB server
 Name: mongodb
-Version: %{mongo_version}%{?dist}
-Release: %{release} 
+Version: %{mongo_version}
+Release: %{release}%{?dist}
 Source0: mongodb-linux-x86_64-%{mongo_version}.tgz
 Source1: mongos.init
 Source2: mongod.init
