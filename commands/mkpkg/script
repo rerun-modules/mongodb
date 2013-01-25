@@ -107,7 +107,7 @@ cp ${RERUN_MODULE_DIR}/lib/mongodb.spec ${BLDDIR}/SPECS/
 rpmbuild -ba --define "_topdir ${BLDDIR}" \
              --define "_tmppath ${BLDDIR}/tmp" \
              --define "mongo_version ${MONGO_VERSION}" \
-             --define "release ${BUILD_NUMBER}" \
+             --define "bldnum ${BUILD_NUMBER}" \
              ${BLDDIR}/SPECS/mongodb.spec
 
 mkdir -p "${TARGET}"
