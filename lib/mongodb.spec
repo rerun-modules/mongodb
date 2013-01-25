@@ -66,8 +66,8 @@ fi
 /usr
 %{_initrddir}/mongos
 %{_initrddir}/mongod
-%dir %attr(-,mongo,mongo) /var/log/mongo
-%dir %attr(-,mongo,mongo) /var/lib/mongo
+%dir %attr(-,mongod,mongod) /var/log/mongo
+%dir %attr(-,mongod,mongod) /var/lib/mongo
  
 %changelog
 * Wed Jan 23 2013 Lee Thompson <thompson@dtosolutions.com> 2.2.2
