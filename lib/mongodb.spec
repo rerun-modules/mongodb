@@ -44,6 +44,8 @@ cp ./mongodb-linux-x86_64-%{mongo_version}/bin/* %{buildroot}/%{_bindir}/
 install -d %{buildroot}/%{_initrddir}/
 install -m 755 %{SOURCE1} %{buildroot}/%{_initrddir}/mongos
 install -m 755 %{SOURCE2} %{buildroot}/%{_initrddir}/mongod
+install -m 755 %{SOURCE2} %{buildroot}/var/log/mongo
+install -m 755 %{SOURCE2} %{buildroot}/var/lib/mongo
 
 %clean
 
@@ -64,9 +66,11 @@ fi
 /usr
 %{_initrddir}/mongos
 %{_initrddir}/mongod
+%dir %attr(-,mongo,mongo) /var/log/mongo
+%dir %attr(-,mongo,mongo) /var/lib/mongo
  
 %changelog
 * Wed Jan 23 2013 Lee Thompson <thompson@dtosolutions.com> 2.2.2
-    - add some RPM syntax sugar, FHS, dist and compression
+    - add some RPM syntax sugar, user, FHS, dist and compression
 * Fri Jun 3 2011 Chuck Scott <chuck@dtosolutions.com> 2.2-2
     - test the changelong
