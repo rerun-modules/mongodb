@@ -44,7 +44,10 @@ cp ./mongodb-linux-x86_64-%{mongo_version}/bin/* %{buildroot}/%{_bindir}/
 install -d %{buildroot}/%{_initrddir}/
 install -m 755 %{SOURCE1} %{buildroot}/%{_initrddir}/mongos
 install -m 755 %{SOURCE2} %{buildroot}/%{_initrddir}/mongod
+install -m 755 %{SOURCE2} %{buildroot}/var
+install -m 755 %{SOURCE2} %{buildroot}/var/log
 install -m 755 %{SOURCE2} %{buildroot}/var/log/mongo
+install -m 755 %{SOURCE2} %{buildroot}/var/lib
 install -m 755 %{SOURCE2} %{buildroot}/var/lib/mongo
 
 %clean
