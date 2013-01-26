@@ -62,7 +62,12 @@ rerun_options_parse "$@"
 # - - -
 # Put the command implementation here.
 
-service mongod start
+if [[ $(id -u) = "0" ]]; then
+    SUDO=""
+else
+    SUDO="sudo "
+fi
+${SUDO}service mongod start
 
 # - - -
 

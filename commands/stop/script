@@ -61,7 +61,12 @@ rerun_options_parse "$@"
 
 # - - -
 # Put the command implementation here.
-service mongod stop
+if [[ $(id -u) = "0" ]]; then
+    SUDO=""
+else
+    SUDO="sudo "
+fi
+${SUDO}service mongod stop
 # - - -
 
 # Done. Exit with last command exit status.
