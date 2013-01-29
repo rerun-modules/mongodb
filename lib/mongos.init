@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # mongos - Startup script for mongos
-#### With edits by Trevor Powell
 
 # chkconfig: 35 85 15
 # description: Mongo is a scalable, document-oriented database.
